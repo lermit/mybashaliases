@@ -1,0 +1,20 @@
+{% extends "aliases/base.html" %}
+
+{% load active_page %}
+
+{% block title %}{{ title }} | My bash aliases !{% endblock %}
+
+{% block navbar %}
+  <div class="masterhead">
+    <ul class="nav nav-pills pull-right">
+      <li class="{% active request "aliases:index" %}"><a href="{% url "aliases:index" %}">Home</a></li>
+      <li><a href="#">Submit</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <h3 class="muted">MyBashAliases</h3>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  <footer>Romain THERRAT - 2013 Copyleft.</footer>
+{% endblock %}

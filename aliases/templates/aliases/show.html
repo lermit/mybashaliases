@@ -1,0 +1,34 @@
+{% extends "aliases/base_site.html" %}
+
+{% block content %}
+<h2>Alias #{{ alias.id }}</h2>
+  <blockquote>
+    <p>{{ alias.content }}</p>
+    <small>{{ alias.description }}</small>
+  </blockquote>
+
+<h3>Comments</h3>
+{% for comment in alias.active_comment_set.all %}
+  <div class="well">
+    <p class="media-header">Post on {{ comment.created_at }}</p>
+    <p class="media">{{ comment }}</p>
+  </div>
+{% empty %}
+  <p>No comment.</p>
+{% endfor %}
+
+<h3>Post a comment</h3>
+  {% if messages %}
+    {% for message in messages %}
+      <p {% if message.tags %}class="text-{{ message.tags }}"{% endif %}>{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+
+  <form action="{% url 'aliases:comment' alias.id %}" method="post" class="input-append span12">
+    {% csrf_token %}
+    <input type="text" id="content" name="content" placeholder="Enter your comment here..."></textarea>
+    <input class="btn" type="submit" value="Save" />
+  </form>
+
+<p class="text-right" ><a href="{% url "aliases:index" %}">Go back</a></p>
+{% endblock %}
