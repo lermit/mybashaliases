@@ -1,4 +1,5 @@
 from django.db import models
+from djangoratings.fields import RatingField
 
 ### ABSTRACT ###
 class Trackable(models.Model):
@@ -18,11 +19,6 @@ class ActivableManager(models.Manager):
   def get_active(self):
     return super(ActivableManager, self).get_query_set().filter(active=True)
 
-
-### Manager  ###
-class CommentManager(ActivableManager):
-  pass
-
 class AliasManager(ActivableManager):
   pass
 
@@ -30,20 +26,8 @@ class AliasManager(ActivableManager):
 class Alias(Trackable, Activable):
   content = models.CharField(max_length=2500)
   description = models.CharField(max_length=2500, blank=True)
+  rating = RatingField(range=5)
   objects = AliasManager()
-
-  def __unicode__(self):
-    return self.content
-  def _get_active_comment_set(self):
-    return self.comment_set.filter(active=True)
-
-  active_comment_set = property(_get_active_comment_set)
-
-
-class Comment(Trackable, Activable):
-  content = models.CharField(max_length=2500)
-  alias = models.ForeignKey(Alias)
-  objects = CommentManager()
 
   def __unicode__(self):
     return self.content

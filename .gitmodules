@@ -1,0 +1,3 @@
+[submodule "aliases/static/aliases/bootstrap"]
+	path = aliases/static/aliases/bootstrap
+	url = https://github.com/twitter/bootstrap.git

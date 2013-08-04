@@ -8,7 +8,7 @@
   <div class="masterhead">
     <ul class="nav nav-pills pull-right">
       <li class="{% active request "aliases:index" %}"><a href="{% url "aliases:index" %}">Home</a></li>
-      <li><a href="#">Submit</a></li>
+      <li class="{% active request "aliases:submit" %}"><a href="{% url "aliases:submit" %}">Submit</a></li>
       <li><a href="#">About</a></li>
     </ul>
     <h3 class="muted">MyBashAliases</h3>

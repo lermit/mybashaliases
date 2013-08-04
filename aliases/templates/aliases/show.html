@@ -1,34 +1,43 @@
 {% extends "aliases/base_site.html" %}
 
-{% load comments %}
+{% load disqus_tags %}
+{% block header %}
+{% disqus_dev %}
+{% endblock %}
 
 {% block content %}
 <h2>Alias #{{ alias.id }}</h2>
-  <blockquote>
-    <p>{{ alias.content }}</p>
-    <small>{{ alias.description }}</small>
-  </blockquote>
+  <div class="row">
+    <div class"span9">
+      <blockquote>
+        <p><code>{{ alias.content }}</code></p>
+        <small>{{ alias.description }}</small>
+      </blockquote>
+    </div>
 
-{% get_comment_count for alias as comment_count %}
-<h3>Comments ({{ comment_count }})</h3>
-{% render_comment_list for alias %}
+    <div class"span3">
+      <span class="rating">
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+      </span>
+    </div>
+  </div>
 
-<h3>Post a comment</h3>
-  {% if messages %}
-    {% for message in messages %}
-      <p {% if message.tags %}class="text-{{ message.tags }}"{% endif %}>{{ message }}</p>
-    {% endfor %}
-  {% endif %}
+<h3>Comments</h3>
+{% disqus_show_comments %}
 
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  var disqus_shortname = 'mybashaliases';
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the comments.</a></noscript>
 
-{% render_comment_form for alias %}
-
-
-  <form action="{% url 'aliases:comment' alias.id %}" method="post" class="input-append span12">
-    {% csrf_token %}
-    <input type="text" id="content" name="content" placeholder="Enter your comment here..."></textarea>
-    <input class="btn" type="submit" value="Save" />
-  </form>
-
-<p class="text-right" ><a href="{% url "aliases:index" %}">Go back</a></p>
 {% endblock %}

@@ -67,7 +67,7 @@ class Messages(object):
 
 
 
-def create_alias(content, description="", active=True, comments=[]):
+def create_alias(content, description="", active=True):
   """
   Create an alias.
 
@@ -75,22 +75,11 @@ def create_alias(content, description="", active=True, comments=[]):
     content: Alias content (ll='ls -l')
     description: Alias description (default: "")
     active: True if the alias is active (default: True)
-    comments: Related comment
   """
   alias = Alias.objects.create(
       content=content,
       description=description,
       active=active
     )
-  for comment in comments:
-    if 'content' in comment:
-      content = comment['content']
-    else:
-      continue
-
-    if 'active' in comment:
-      active = comment['active']
-
-    alias.comment_set.create(content=content, active=active)
   return alias
 

@@ -120,13 +120,21 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.comments',
+    #'django.contrib.comments',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    # Django rating system
+    'djangoratings',
+    # Disqus django binding
+    'disqus',
     'aliases',
 )
+
+# DISQUS
+DISQUS_API_KEY = 'HPCwytrlukli7KiScpuHEAl3GAEAywun2RBI623GEJ7WltyXYbPdBb85iZ1U8Oxu'
+DISQUS_WHEBSITE_SHORTNAME = 'mybashaliases'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

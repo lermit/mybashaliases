@@ -10,12 +10,16 @@
 {% block content %}
   {% if aliases %}
     {% for alias in aliases %}
-      <blockquote>
-        <p>{{ alias.content }}</p>
-        <small>{{ alias.description }}</small>
-      </blockquote>
+      <p>
+        Posted by toto at 12th January
+      </p>
+        <blockquote>
+          <p><code>{{ alias.content }}</code></p>
+          <small>{{ alias.description }}</small>
+        </blockquote>
+      </p>
       <p class="btn-group">
-        <a class="btn btn-small" href="{% url 'aliases:show' alias.id %}"><i class="icon-comment"></i>Comment ({{ alias.active_comment_set.count }})</a> <a class="btn btn-small" href="#"><i class="icon-heart"></i>I love this one</a> <a class="btn btn-small" href="#"><i class="icon-remove"></i>This is a peace of shit</a>
+        <a class="btn btn-small" href="{% url 'aliases:show' alias.id %}"><i class="icon-comment"></i>Comment (TODO)</a> <a class="btn btn-small" href="{% url 'aliases:rank_add' alias.id %}"><i class="icon-heart"></i>I love this one</a> <a class="btn btn-small" href="{% url 'aliases:rank_sub' alias.id %}"><i class="icon-remove"></i>This is a peace of shit</a>
       </p>
     {% endfor %}
   {% else %}

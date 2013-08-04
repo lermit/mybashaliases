@@ -5,6 +5,7 @@ from django.views import generic
 from django.contrib import messages
 
 from aliases.models import Alias
+from aliases.forms import SubmitForm
 
 def index(request):
   aliases = Alias.objects.get_active()
@@ -18,16 +19,22 @@ class DetailView(generic.DetailView):
   def get_queryset(self):
     return Alias.objects.get_active()
 
-def comment(request, alias_id):
-  alias = get_object_or_404(Alias, pk=alias_id)
-  try:
-    comment_content = request.POST['content']
-  except KeyError:
-    return render(request, 'aliases/show.html', {
-      'alias': alias,
-      'error_message': 'Comment is empty',
-    })
+def submit(request):
+  """Submit a new bash aliases for validation
+  """
+
+  if request.method == 'POST':
+    form = SubmitForm(request.POST)
+    if form.is_valid():
+      form.save()
+      form = SubmitForm()
+      messages.success(request, "Your alias as been submited. It'll be display as soon as a moderator validate him. Thank you !")
   else:
-    alias.comment_set.create(content=comment_content)
-    messages.info(request, "Thank you. Your comment is awaiting moderation.")
-    return HttpResponseRedirect(reverse( 'aliases:show', args=(alias.id,)))
+    form = SubmitForm()
+
+  return render(request,
+    'aliases/submit.html',
+    { 'form': form })
+
+
+
