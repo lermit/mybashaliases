@@ -1,0 +1,22 @@
+{% extends "base_form.html" %}
+
+{% block content_text %}
+  <p>In order to loggin and be able to post some new aliases please fill this form.</p>
+{% endblock %}
+
+{% block content_form %}
+      <form method="post" action="{% url 'registration:login' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        <fieldset>
+          <legend>Login</legend>
+          {% for field in form %}
+          <div class="form-group">
+            {{ field.label_tag }}
+            <input type="text" class="form-control" id="{{ field.id_for_label }}" name="{{ field.name }}" placeholder="{{ field.label }}" {% if field.help_text %} data-toggle="popover" data-placement="left" data-content="{{ field.help_text }}" data-original-title="{{ field.name }}" data-trigger="hover" {% endif %}>
+          </div>
+          {% endfor %}
+        </fieldset>
+        <input type="submit" class="pull-right btn btn-default" value="login" />
+      </form>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base_form.html" %}
+
+{% block content_text %}
+<p>Hi {{ user.username }} !</p>
+<p>I see you are registred since {{ user.date_joined }} and you last log in {{ user.last_login }}.</p>
+<p>
+Here you can edit you personal information
+</p>
+{% endblock %}
+
+{% block content_form %}
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <form class="form-horizontal" method="post" action="{% url "registration:my_profile" %}">
+  {% csrf_token %}
+    <fieldset>
+      <legend>My Profile</legend>
+      {% for field in form %}
+      <div class="form-group">
+        {{ field.label_tag }}
+        <input type="text" class="form-control" id="{{ field.id_for_label }}" value="{{ field.value }}" name="{{ field.name }}" placeholder="{{ field.label }}" {% if field.help_text %} data-toggle="popover" data-placement="left" data-content="{{ field.help_text }}" data-original-title="{{ field.name }}" data-trigger="hover" {% endif %}>
+      </div>
+      {% endfor %}
+    </fieldset>
+    <button type="submit" class="pull-right btn btn-default">Save change</button>
+  </form>
+{% endblock %}

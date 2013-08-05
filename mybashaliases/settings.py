@@ -129,8 +129,12 @@ INSTALLED_APPS = (
     'djangoratings',
     # Disqus django binding
     'disqus',
+    'registration',
     'aliases',
 )
+
+# Authentication configuration
+LOGIN_REDIRECT_URL = '/accounts/profile'
 
 # DISQUS
 DISQUS_API_KEY = 'HPCwytrlukli7KiScpuHEAl3GAEAywun2RBI623GEJ7WltyXYbPdBb85iZ1U8Oxu'

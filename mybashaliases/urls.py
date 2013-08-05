@@ -7,5 +7,6 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^aliases/', include('aliases.urls', namespace="aliases")),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^comment/', include('django.contrib.comments.urls')),
+    url(r'^accounts/', include('registration.urls', namespace='registration')),
+
 )
