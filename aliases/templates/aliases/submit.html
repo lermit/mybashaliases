@@ -1,15 +1,24 @@
 {% extends "base_form.html" %}
 
+{% block header %}
+<h1>Submit my bash aliases !</h1>
+{% endblock %}
+
 {% block content_text %}
 <p>You can submit your bash aliases. This one will be validate and afterall publish for the community.</p>
 {% endblock %}
 
-
 {% block content_form %}
-<h2>Submit my bash aliases !</h2>
-<form method="post" action="{% url "aliases:submit" %}">
-  {% csrf_token %}
-  {{ form }}
-  <input type="submit" value="Let's go" />
-</form>
+  <form method="post" action="{% url "aliases:submit" %}">
+    {% csrf_token %}
+    <fieldset>
+      <legend>Submit an alias</legend>
+      {% for field in form %}
+        <div class="form-group">
+          {{ field.label_tag }}
+          <input type="text" class="form-control" id="{{ field.id_for_label }}" {% if field.value %}value="{{ field.value }}"{% endif %} name="{{ field.name }}" placeholder="{{ field.label }}" {% if field.help_text %} data-toggle="popover" data-placement="left" data-content="{{ field.help_text }}" data-original-title="{{ field.name }}" data-trigger="hover" {% endif %}>
+        </div>
+      {% endfor %}
+    </fieldset>
+    <button type="submit" class="pull-right btn btn-default">Let's go</button>
 {% endblock %}
