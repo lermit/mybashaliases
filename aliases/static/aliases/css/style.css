@@ -1,0 +1,4 @@
+blockquote.alias > p, blockquote.alias > p > code{
+  background-color: black;
+  color: greenyellow;
+}

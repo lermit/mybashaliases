@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if form.errors %}
+  <div class="alert">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>Warning!</strong> Best check yo self, you're not looking too good.
+      </div>
+  <p>Your username and password didn't match. Please try again.</p>
+  {% endif %}
+
+  <div class="raw">
+    <div class="col-lg-6">
+    {% block content_text %}{% endblock %}
+    </div>
+    <div class="col-lg-6">
+    {% block content_form %}{% endblock %}
+    </div>
+{% endblock %}
