@@ -1,6 +1,8 @@
 from django.db import models
 from djangoratings.fields import RatingField
 
+ALIAS_RATING_RANGE = 5
+
 ### ABSTRACT ###
 class Trackable(models.Model):
   created_at = models.DateTimeField(auto_now_add = True)
@@ -26,7 +28,7 @@ class AliasManager(ActivableManager):
 class Alias(Trackable, Activable):
   content = models.CharField(max_length=2500)
   description = models.CharField(max_length=2500, blank=True)
-  rating = RatingField(range=5)
+  rating = RatingField(range=ALIAS_RATING_RANGE, can_change_vote=True)
   objects = AliasManager()
 
   def __unicode__(self):

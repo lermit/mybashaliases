@@ -1,5 +1,7 @@
 {% extends "aliases/base_site.html" %}
 
+{% load ratings %}
+
 {% block header %}
   <div class="hero-unit">
     <h1>Welcome to fabulous Bash Aliases !</h1>
@@ -10,17 +12,33 @@
 {% block content %}
   {% if aliases %}
     {% for alias in aliases %}
-      <p>
-        Posted by toto at 12th January
-      </p>
-        <blockquote class="alias">
-          <p class="well"><code>{{ alias.content }}</code></p>
-          <small>{{ alias.description }}</small>
-        </blockquote>
-      </p>
-      <p class="btn-group">
-        <a class="btn btn-small" href="{% url 'aliases:show' alias.id %}"><i class="icon-comment"></i>Comment (TODO)</a> <a class="btn btn-small" href="{% url 'aliases:rank_add' alias.id %}"><i class="icon-heart"></i>I love this one</a> <a class="btn btn-small" href="{% url 'aliases:rank_sub' alias.id %}"><i class="icon-remove"></i>This is a peace of shit</a>
-      </p>
+      <div class="raw">
+
+        <div class="col-lg-9">
+          <p>
+            Posted by toto at 12th January
+          </p>
+            <blockquote class="alias">
+              <p class="well"><code>{{ alias.content }}</code></p>
+              <small>{{ alias.description }}</small>
+            </blockquote>
+          </p>
+        </div>
+
+
+        <div class="col-lg-3">
+          <h2>Rating</h2>
+          <p>Actually this alias is rated <strong>{{ alias.rating.get_rating }}/5</strong>. Rate this one too !</p>
+          <form class="rating" method="post" action="{% url 'aliases:rate' alias.id %}">
+            {% csrf_token %}
+            {% rating_by_request request on alias.rating as vote %}
+            {% for radio in alias.rating_form.rate %}
+              <input type="radio" id="{{ radio.name }}{{ radio.choice_value }}" name="{{ radio.name }}" value="{{ radio.choice_value }}" {% ifequal vote|add:"0" radio.choice_label|add:"0" %}checked{% endifequal %}/><label for="{{ radio.name }}{{ radio.choice_value }}">{{ radio.choice_label }}</label>
+            {% endfor %}
+            <input type="submit" value="Rate !" />
+          </form>
+        </div>
+      </div>
     {% endfor %}
   {% else %}
     <p>No alias here.</p>

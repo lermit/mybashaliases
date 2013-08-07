@@ -1,14 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseNotFound
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.contrib import messages
 
 from aliases.models import Alias
-from aliases.forms import SubmitForm
+from aliases.forms import SubmitForm, AliasRatingForm
 
 def index(request):
+
+  context = {}
+
   aliases = Alias.objects.get_active()
-  context = { 'aliases': aliases }
+  context.update({ 'aliases': aliases })
+
+  for alias in aliases:
+    rating_form= AliasRatingForm(alias=alias)
+    alias.rating_form = rating_form
+
   return render(request, 'aliases/index.html', context)
 
 class DetailView(generic.DetailView):
@@ -36,4 +45,22 @@ def submit(request):
     { 'form': form })
 
 
+def rate(request, pk):
+  """Rate an alias
+  """
+  # Only post request are allow
+  if not request.method == 'POST':
+    return HttpResponseNotFound()
+
+  # Get alias
+  alias = get_object_or_404(Alias, pk=pk)
+
+  # Validate Form
+  rating_form = AliasRatingForm(alias, request.POST)
+  if rating_form.is_valid():
+    alias.rating.add(score=rating_form.cleaned_data['rate'], user=request.user, ip_address=request.META['REMOTE_ADDR'])
+    messages.success(request, "Your rate has been save ! Thank you !")
+  else:
+    messages.error(request, "An error occured")
+  return redirect('aliases:index')
 
