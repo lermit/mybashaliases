@@ -34,7 +34,9 @@ def submit(request):
   if request.method == 'POST':
     form = SubmitForm(request.POST)
     if form.is_valid():
-      form.save()
+      alias = form.save(commit=False)
+      alias.created_by = request.user
+      alias.save()
       form = SubmitForm()
       messages.success(request, "Your alias as been submited. It'll be display as soon as a moderator validate him. Thank you !")
   else:

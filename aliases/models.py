@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from djangoratings.fields import RatingField
 
 ALIAS_RATING_RANGE = 5
@@ -29,6 +30,7 @@ class Alias(Trackable, Activable):
   content = models.CharField(max_length=2500)
   description = models.CharField(max_length=2500, blank=True)
   rating = RatingField(range=ALIAS_RATING_RANGE, can_change_vote=True)
+  created_by = models.ForeignKey(User, editable=False)
   objects = AliasManager()
 
   def __unicode__(self):
