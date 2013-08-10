@@ -127,8 +127,11 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     # Django rating system
     'djangoratings',
+    # Django tagging system
+    'taggit',
     # Disqus django binding
     'disqus',
+    # Our modules
     'registration',
     'aliases',
 )
