@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content_form %}
+  {% if user.is_authenticated %}
   <form method="post" action="{% url "aliases:submit" %}">
     {% csrf_token %}
     <fieldset>
@@ -21,4 +22,7 @@
       {% endfor %}
     </fieldset>
     <button type="submit" class="pull-right btn btn-default">Let's go</button>
+    {% else %}
+    <p>Please <a href="{% url 'registration:login' %}">login</a> if you want to post a new bash aliases !</p>
+    {% endif %}
 {% endblock %}
