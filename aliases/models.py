@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
 from djangoratings.fields import RatingField
 
 ALIAS_RATING_RANGE = 5
@@ -32,6 +33,7 @@ class Alias(Trackable, Activable):
   rating = RatingField(range=ALIAS_RATING_RANGE, can_change_vote=True)
   created_by = models.ForeignKey(User, editable=False)
   objects = AliasManager()
+  tags = TaggableManager()
 
   def __unicode__(self):
     return self.content
