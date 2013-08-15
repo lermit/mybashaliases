@@ -29,25 +29,25 @@ class DetailView(generic.DetailView):
   def get_queryset(self):
     return Alias.objects.get_active()
 
-def submit(request):
+class SubmitView(generic.FormView):
   """Submit a new bash aliases for validation
   """
+  form_class = SubmitForm
+  template_name = 'aliases/submit.html'
 
-  if request.method == 'POST':
-    form = SubmitForm(request.POST)
-    if form.is_valid():
-      alias = form.save(commit=False)
-      alias.created_by = request.user
-      alias.save()
-      form = SubmitForm()
-      messages.success(request, "Your alias as been submited. It'll be display as soon as a moderator validate him. Thank you !")
-  else:
-    form = SubmitForm()
+  def get_success_url(self):
+    return reverse("aliases:submit")
 
-  return render(request,
-    'aliases/submit.html',
-    { 'form': form })
-
+  def form_valid(self, form):
+    """Save the new aliases.
+    """
+    alias = form.save(commit=False)
+    alias.created_by = self.request.user
+    alias.save()
+    messages.success(
+      self.request,
+      "Your alias as been submited. It'll be display as soon as a moderator validate him. Thank you !")
+    return super(SubmitView, self).form_valid(form)
 
 class RateView(generic.View):
   form_class = AliasRatingForm
