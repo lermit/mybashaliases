@@ -17,6 +17,7 @@ class IndexView(generic.ListView):
   model = Alias
   template_name = 'aliases/index.html'
   queryset = Alias.objects.get_active()
+  paginate_by = 3
 
   def get_context_data(self, **kwargs):
     """Append a 'rating_form' attribute in each Alias

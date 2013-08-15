@@ -11,6 +11,17 @@
 
 {% block content %}
   {% if object_list %}
+    {% if is_paginated %}
+    <div class="col-lg-12">
+      <ul class="pager">
+        <li {% if not page_obj.has_previous %}class="disabled"{% endif %}><a href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}">&laquo;</a></li>
+        {% for page in paginator.page_range %}
+        <li {% ifequal page_obj.number page %}class="active disabled"{% endifequal %}><a href="?page={{ page }}">{{ page }}</a></li>
+        {% endfor %}
+        <li {% if not page_obj.has_next %}class="disabled"{% endif %}><a href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}">&raquo;</a></li>
+      </ul>
+    </div>
+    {% endif %}
     {% for alias in object_list %}
       <div class="raw">
 
