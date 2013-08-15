@@ -12,22 +12,23 @@ from aliases.models import Alias
 from aliases.forms import SubmitForm, AliasRatingForm
 
 class IndexView(generic.ListView):
+  """Display all aliases
+  """
   model = Alias
   template_name = 'aliases/index.html'
+  queryset = Alias.objects.get_active()
 
-  def get_queryset(self):
-    """Return a queryset of all active aliases with the related rating form.
-
-    Rating form can be access with the rating_form attribute.
+  def get_context_data(self, **kwargs):
+    """Append a 'rating_form' attribute in each Alias
     """
-    aliases = Alias.objects.get_active()
-    for alias in aliases:
-      rating_form = AliasRatingForm(alias=alias)
-      alias.rating_form = rating_form
-    return aliases
+    context = super(IndexView, self).get_context_data(**kwargs)
+    for alias in context['object_list']:
+      alias.rating_form = AliasRatingForm(alias=alias)
+    return context
 
 class TaggedView(IndexView):
-
+  """Display aliases with specified tag
+  """
   def get_queryset(self):
     """Retreive aliases with specified tag
     """
