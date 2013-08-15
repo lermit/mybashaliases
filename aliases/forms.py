@@ -6,6 +6,13 @@ class SubmitForm(forms.ModelForm):
   class Meta:
     model = Alias
     fields = ('content', 'description')
+    label = {
+      'content': 'Alias',
+    }
+    help_texts = {
+      'content': "First part of a valid alias must be any character execpt the equal sign (=) or space ( ) directly follow by an equal sign (=). Second part should be the command. If command contain space it must be single or double quote surrounded.",
+      'description': 'test',
+    }
 
 class AliasRatingForm(forms.Form):
 
