@@ -49,22 +49,23 @@ def submit(request):
     { 'form': form })
 
 
-def rate(request, pk):
-  """Rate an alias
-  """
-  # Only post request are allow
-  if not request.method == 'POST':
+class RateView(generic.View):
+  form_class = AliasRatingForm
+
+  def get(self, request, *args, **kwargs):
     return HttpResponseNotFound()
 
-  # Get alias
-  alias = get_object_or_404(Alias, pk=pk)
-
-  # Validate Form
-  rating_form = AliasRatingForm(alias, request.POST)
-  if rating_form.is_valid():
-    alias.rating.add(score=rating_form.cleaned_data['rate'], user=request.user, ip_address=request.META['REMOTE_ADDR'])
-    messages.success(request, "Your rate has been save ! Thank you !")
-  else:
-    messages.error(request, "An error occured")
-  return redirect('aliases:index')
-
+  def post(self, request, pk, *args, **kwargs):
+    alias = get_object_or_404(Alias, pk=pk)
+    rating_form = AliasRatingForm(alias, request.POST)
+    if rating_form.is_valid():
+      alias.rating.add(
+        score=rating_form.cleaned_data['rate'],
+        user=request.user,
+        ip_address=request.META['REMOTE_ADDR'])
+      messages.success(request,
+        "Your rate has been save ! Thank you !")
+    else:
+      messages.error(request,
+        "An error occured")
+    return redirect('aliases:index')
