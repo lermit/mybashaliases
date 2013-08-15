@@ -7,18 +7,20 @@ from django.contrib import messages
 from aliases.models import Alias
 from aliases.forms import SubmitForm, AliasRatingForm
 
-def index(request):
+class IndexView(generic.ListView):
+  model = Alias
+  template_name = 'aliases/index.html'
 
-  context = {}
+  def get_queryset(self):
+    """Return a queryset of all active aliases with the related rating form.
 
-  aliases = Alias.objects.get_active()
-  context.update({ 'aliases': aliases })
-
-  for alias in aliases:
-    rating_form= AliasRatingForm(alias=alias)
-    alias.rating_form = rating_form
-
-  return render(request, 'aliases/index.html', context)
+    Rating form can be access with the rating_form attribute.
+    """
+    aliases = Alias.objects.get_active()
+    for alias in aliases:
+      rating_form = AliasRatingForm(alias=alias)
+      alias.rating_form = rating_form
+    return aliases
 
 class DetailView(generic.DetailView):
   model=Alias
