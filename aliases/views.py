@@ -1,8 +1,12 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponseNotFound
 from django.core.urlresolvers import reverse
 from django.views import generic
+
 from django.contrib import messages
+from django.contrib.contenttypes.models import ContentType
+
+from taggit.models import Tag, TaggedItem
 
 from aliases.models import Alias
 from aliases.forms import SubmitForm, AliasRatingForm
@@ -21,6 +25,20 @@ class IndexView(generic.ListView):
       rating_form = AliasRatingForm(alias=alias)
       alias.rating_form = rating_form
     return aliases
+
+class TaggedView(IndexView):
+
+  def get_queryset(self):
+    """Retreive aliases with specified tag
+    """
+    tag = get_object_or_404(Tag, slug=self.kwargs['tag_slug'])
+    queryset = super(TaggedView, self).get_queryset()
+    queryset = queryset.filter(
+      pk__in=TaggedItem.objects.filter(
+        tag=tag,
+        content_type=ContentType.objects.get_for_model(self.model))
+      .values_list("object_id", flat=True))
+    return queryset
 
 class DetailView(generic.DetailView):
   model=Alias

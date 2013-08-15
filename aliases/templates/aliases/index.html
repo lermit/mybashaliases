@@ -42,7 +42,7 @@
       <div class="raw">
         <div class="col-lg-12">
         {% for tag in alias.tags.all %}
-          <a href="#" class="btn btn-primary btn-xs">{{ tag }}</a>
+          <a href="{% url 'aliases:tagged' tag %}" class="btn btn-primary btn-xs">{{ tag }}</a>
         {% endfor %}
         </div>
       </div>
