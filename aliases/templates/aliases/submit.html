@@ -14,12 +14,7 @@
     {% csrf_token %}
     <fieldset>
       <legend>Submit an alias</legend>
-      {% for field in form %}
-        <div class="form-group">
-          {{ field.label_tag }}
-          <input type="text" class="form-control" id="{{ field.id_for_label }}" {% if field.value %}value="{{ field.value }}"{% endif %} name="{{ field.name }}" placeholder="{{ field.label }}" {% if field.help_text %} data-toggle="popover" data-placement="left" data-content="{{ field.help_text }}" data-original-title="{{ field.name }}" data-trigger="hover" {% endif %}>
-        </div>
-      {% endfor %}
+      {% include "form.html" %}
     </fieldset>
     <button type="submit" class="pull-right btn btn-default">Let's go</button>
     {% else %}
