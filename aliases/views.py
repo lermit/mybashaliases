@@ -42,6 +42,19 @@ class TaggedView(IndexView):
       .values_list("object_id", flat=True))
     return queryset
 
+class TopView(IndexView):
+  """Display top rated aliases
+  """
+
+  def get_queryset(self):
+    """Retreive top 10 ratted aliases
+    """
+    queryset = super(IndexView, self).get_queryset()
+    return queryset.extra(select={
+      'score': '((100/%s*rating_score/(rating_votes+%s))+100)/2' % (
+        Alias.rating.range,
+        Alias.rating.weight)}).order_by('-score')
+
 class DetailView(generic.DetailView):
   model=Alias
   template_name = 'aliases/show.html'
