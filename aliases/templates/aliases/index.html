@@ -47,14 +47,14 @@
           <form class="rating" method="post" action="{% url 'aliases:rate' alias.id %}">
             {% csrf_token %}
             {% rating_by_request request on alias.rating as vote %}
-            <div class="btn-group" data-toggle="buttons">
+            <div class="btn-group btn-group-justify" data-toggle="buttons">
               {% for radio in alias.rating_form.rate %}
-              <label class="btn btn-primary">
-                <input type="radio" id="{{ radio.name }}{{ radio.choice_value }}" name="{{ radio.name }}" value="{{ radio.choice_value }}" {% ifequal vote|add:"0" radio.choice_label|add:"0" %}checked{% endifequal %}/>{{ radio.choice_label }}
+              <label class="btn btn-primary {% ifequal vote|add:"0" radio.choice_label|add:"0" %}checked{% endifequal %}">
+                <input type="radio" id="{{ radio.name }}{{ radio.choice_value }}" name="{{ radio.name }}" value="{{ radio.choice_value }}" />{{ radio.choice_label }}
               </label>
               {% endfor %}
             </div>
-            <input type="submit" value="Rate !" />
+            <input class="btn" type="submit" value="Rate !" />
           </form>
         </div>
       </div>
