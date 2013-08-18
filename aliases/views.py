@@ -12,6 +12,10 @@ from aliases.models import Alias
 from aliases.forms import SubmitForm, AliasRatingForm
 
 class IndexView(generic.ListView):
+  model = Alias
+  template_name = 'aliases/index.html'
+
+class AllView(generic.ListView):
   """Display all aliases
   """
   model = Alias
@@ -22,12 +26,12 @@ class IndexView(generic.ListView):
   def get_context_data(self, **kwargs):
     """Append a 'rating_form' attribute in each Alias
     """
-    context = super(IndexView, self).get_context_data(**kwargs)
+    context = super(AllView, self).get_context_data(**kwargs)
     for alias in context['object_list']:
       alias.rating_form = AliasRatingForm(alias=alias)
     return context
 
-class TaggedView(IndexView):
+class TaggedView(AllView):
   """Display aliases with specified tag
   """
   def get_queryset(self):
@@ -42,14 +46,14 @@ class TaggedView(IndexView):
       .values_list("object_id", flat=True))
     return queryset
 
-class TopView(IndexView):
+class TopView(AllView):
   """Display top rated aliases
   """
 
   def get_queryset(self):
     """Retreive top 10 ratted aliases
     """
-    queryset = super(IndexView, self).get_queryset()
+    queryset = super(AllView, self).get_queryset()
     return queryset.extra(select={
       'score': '((100/%s*rating_score/(rating_votes+%s))+100)/2' % (
         Alias.rating.range,
