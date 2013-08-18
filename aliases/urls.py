@@ -9,5 +9,6 @@ urlpatterns = patterns('',
   url(r'^rate/(?P<pk>\d+)/$', views.RateView.as_view(), name='rate'),
   url(r'^tagged/(?P<tag_slug>[\w-]+)/$', views.TaggedView.as_view(), name='tagged'),
   url(r'^top/$', views.TopView.as_view(), name='top'),
+  url(r'^random/$', views.RandomView.as_view(), name='random'),
   url(r'^(?P<pk>\d+)/$', views.DetailView.as_view(), name='show'),
 )

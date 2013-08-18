@@ -1,3 +1,5 @@
+from random import sample
+
 from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
@@ -22,12 +24,50 @@ class Activable(models.Model):
   class Meta:
     abstract = True
 
-class ActivableManager(models.Manager):
+class ActivableManager(object):
   def get_active(self):
-    return super(ActivableManager, self).get_query_set().filter(active=True)
+    return self.all().filter(active=True)
 
-class AliasManager(ActivableManager):
-  pass
+class RandomObjectManager(object):
+  """
+  Manager Mixin to implement get_random() in your models.
+  You can override get_objects to tune the queriset
+
+  To use, define your class:
+
+  class MyManager(models.Manager, RandomObjectManager):
+      DEFAULT_NUMBER = 5 # I can change that
+
+      def get_objects(self):
+          return self.filter(active=True) # Only active models plz
+
+  class MyModel(models.Model):
+      active = models.BooleanField()
+      objects = MyManager()
+
+  Now you can do:
+  MyModel.objects.get_random()
+
+  """
+
+  DEFAULT_NUMBER = 3
+
+  def get_objects(self):
+    return self.all()
+
+  def get_random(self, number=DEFAULT_NUMBER):
+    """
+    Returns a set of random objects
+    """
+    ids = self.get_objects().values_list('id', flat=True)
+    amount = min(len(ids), number)
+    picked_ids = sample(ids, amount)
+    return self.filter(id__in=picked_ids)
+  
+
+class AliasManager(models.Manager, ActivableManager, RandomObjectManager):
+  def get_objects(self):
+    return self.get_active()
 
 ### models ###
 class Alias(Trackable, Activable):

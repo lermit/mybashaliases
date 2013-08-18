@@ -46,6 +46,15 @@ class TaggedView(AllView):
       .values_list("object_id", flat=True))
     return queryset
 
+class RandomView(AllView):
+  """Display a set of random aliases
+  """
+
+  def get_queryset(self):
+    """Return 3 random aliases
+    """
+    return Alias.objects.get_random()
+
 class TopView(AllView):
   """Display top rated aliases
   """
