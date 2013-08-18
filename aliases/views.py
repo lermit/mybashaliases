@@ -21,7 +21,7 @@ class AllView(generic.ListView):
   model = Alias
   template_name = 'aliases/index.html'
   queryset = Alias.objects.get_active()
-  paginate_by = 3
+  paginate_by = 10
 
   def get_context_data(self, **kwargs):
     """Append a 'rating_form' attribute in each Alias
@@ -66,7 +66,7 @@ class TopView(AllView):
     return queryset.extra(select={
       'score': '((100/%s*rating_score/(rating_votes+%s))+100)/2' % (
         Alias.rating.range,
-        Alias.rating.weight)}).order_by('-score')
+        Alias.rating.weight)}).order_by('-score')[:10]
 
 class DetailView(generic.DetailView):
   model=Alias
