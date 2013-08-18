@@ -29,10 +29,14 @@
           <p>
             Posted by {{ alias.created_by }} on {{ alias.created_at }}
           </p>
-            <blockquote class="alias">
-              <p class="well"><code>{{ alias.content }}</code></p>
-              <small>{{ alias.description }}</small>
-            </blockquote>
+          <blockquote class="alias">
+            <p class="well"><code>{{ alias.content }}</code></p>
+            <small>{{ alias.description }}</small>
+          </blockquote>
+          <p>Tags :
+          {% for tag in alias.tags.all %}
+            <a href="{% url 'aliases:tagged' tag %}" class="btn btn-primary btn-xs">{{ tag }}</a>
+          {% endfor %}
           </p>
         </div>
 
@@ -43,20 +47,18 @@
           <form class="rating" method="post" action="{% url 'aliases:rate' alias.id %}">
             {% csrf_token %}
             {% rating_by_request request on alias.rating as vote %}
-            {% for radio in alias.rating_form.rate %}
-              <input type="radio" id="{{ radio.name }}{{ radio.choice_value }}" name="{{ radio.name }}" value="{{ radio.choice_value }}" {% ifequal vote|add:"0" radio.choice_label|add:"0" %}checked{% endifequal %}/><label for="{{ radio.name }}{{ radio.choice_value }}">{{ radio.choice_label }}</label>
-            {% endfor %}
+            <div class="btn-group" data-toggle="buttons">
+              {% for radio in alias.rating_form.rate %}
+              <label class="btn btn-primary">
+                <input type="radio" id="{{ radio.name }}{{ radio.choice_value }}" name="{{ radio.name }}" value="{{ radio.choice_value }}" {% ifequal vote|add:"0" radio.choice_label|add:"0" %}checked{% endifequal %}/>{{ radio.choice_label }}
+              </label>
+              {% endfor %}
+            </div>
             <input type="submit" value="Rate !" />
           </form>
         </div>
       </div>
-      <div class="raw">
-        <div class="col-lg-12">
-        {% for tag in alias.tags.all %}
-          <a href="{% url 'aliases:tagged' tag %}" class="btn btn-primary btn-xs">{{ tag }}</a>
-        {% endfor %}
-        </div>
-      </div>
+
     {% endfor %}
   {% else %}
     <p>No alias here.</p>

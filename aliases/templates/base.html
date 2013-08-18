@@ -36,9 +36,9 @@
 
     <div class="collapse navbar-collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-          <li class="{% active request "aliases:index" %}"><a href="{% url "aliases:index" %}">Top 10</a></li>
+          <li class="{% active request "aliases:top" %}"><a href="{% url "aliases:top" %}">Top</a></li>
           <li class="{% active request "aliases:index" %}"><a href="{% url "aliases:index" %}">Random</a></li>
-          <li class="{% active request "aliases:index" %}"><a href="{% url "aliases:index" %}">All</a></li>
+          <li class="{% active request "aliases:all" %}"><a href="{% url "aliases:all" %}">All</a></li>
           <li class="{% active request "aliases:submit" %}"><a href="{% url "aliases:submit" %}">Submit</a></li>
           <li><a href="#">About</a></li>
         </ul>

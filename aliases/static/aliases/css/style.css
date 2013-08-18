@@ -2,27 +2,3 @@ blockquote.alias > p, blockquote.alias > p > code{
   background-color: black;
   color: greenyellow;
 }
-
-input[type=radio] {
-  margin: 10px;
-  position: absolute;
-  z-index: -1;
-}
-
-input[type=radio] + label {
-  display: inline-block;
-  margin: -2px;
-  padding: 4px 12px;
-  background-color: #e7e7e7;
-  border-color: #ddd;
-}
-
-input[type=radio]:hover + label{
-  background-image: none;
-  background-color: #c0c0c0;
-}
-
-input[type=radio]:checked + label {
-  background-image: none;
-  background-color: #d0d0d0;
-}
