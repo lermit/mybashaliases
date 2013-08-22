@@ -125,6 +125,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    # Haystack for indexing
+    'haystack',
     # Django rating system
     'djangoratings',
     # Django tagging system
@@ -142,6 +144,15 @@ LOGIN_REDIRECT_URL = '/accounts/profile'
 # DISQUS
 DISQUS_API_KEY = 'HPCwytrlukli7KiScpuHEAl3GAEAywun2RBI623GEJ7WltyXYbPdBb85iZ1U8Oxu'
 DISQUS_WHEBSITE_SHORTNAME = 'mybashaliases'
+
+# Haystack
+HAYSTACK_CONNECTIONS = {
+  'default': {
+    'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+      'URL': 'http://127.0.0.1:9200/',
+      'INDEX_NAME': 'mybashaliases',
+  },
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

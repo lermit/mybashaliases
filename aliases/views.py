@@ -6,16 +6,26 @@ from django.views import generic
 from django.contrib import messages
 from django.contrib.contenttypes.models import ContentType
 
+from haystack.forms import SearchForm
+
 from taggit.models import Tag, TaggedItem
 
 from aliases.models import Alias
 from aliases.forms import SubmitForm, AliasRatingForm
 
+class GenericBaseViewMixin(object):
+  search_form = SearchForm()
+
+  def get_search_form(self, **kwargs):
+    """Add the search form to view
+    """
+    return self.search_form
+
 class IndexView(generic.ListView):
   model = Alias
   template_name = 'aliases/index.html'
 
-class AllView(generic.ListView):
+class AllView(generic.ListView, GenericBaseViewMixin):
   """Display all aliases
   """
   model = Alias
@@ -27,6 +37,7 @@ class AllView(generic.ListView):
     """Append a 'rating_form' attribute in each Alias
     """
     context = super(AllView, self).get_context_data(**kwargs)
+    context.update( {'search_form': self.get_search_form()} )
     for alias in context['object_list']:
       alias.rating_form = AliasRatingForm(alias=alias)
     return context
@@ -70,6 +81,7 @@ class TopView(AllView):
 
 class DetailView(generic.DetailView):
   model=Alias
+  slug_field = 'slug'
   template_name = 'aliases/show.html'
 
   def get_queryset(self):
@@ -83,6 +95,7 @@ class SubmitView(generic.FormView):
 
   def get_success_url(self):
     return reverse("aliases:submit")
+
 
   def form_valid(self, form):
     """Save the new aliases.
@@ -115,3 +128,9 @@ class RateView(generic.View):
       messages.error(request,
         "An error occured")
     return redirect('aliases:index')
+
+from haystack.views import SearchView
+class AliasSearchView(SearchView):
+  def extra_context(self):
+    return { 'object_list': self.results }
+

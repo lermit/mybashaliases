@@ -1,6 +1,7 @@
 -e git+https://github.com/django/django.git@529afa7138c6bd5efb4c6ac995597d2f25611d73#egg=Django-dev
 argparse==1.2.1
 django-disqus==0.4.1
+django-haystack==2.1.0
 django-ratings==0.3.7
 -e git+https://github.com/alex/django-taggit.git@aca6079a1ce6eb09a21f3f3944c177e99a706bc9#egg=django_taggit-dev
 wsgiref==0.1.2

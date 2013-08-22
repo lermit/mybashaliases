@@ -1,6 +1,8 @@
 from random import sample
 
+from django.core.urlresolvers import reverse
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 from djangoratings.fields import RatingField
@@ -63,7 +65,7 @@ class RandomObjectManager(object):
     amount = min(len(ids), number)
     picked_ids = sample(ids, amount)
     return self.filter(id__in=picked_ids)
-  
+
 
 class AliasManager(models.Manager, ActivableManager, RandomObjectManager):
   def get_objects(self):
@@ -71,6 +73,7 @@ class AliasManager(models.Manager, ActivableManager, RandomObjectManager):
 
 ### models ###
 class Alias(Trackable, Activable):
+  slug = models.SlugField(unique=True)
   content = models.CharField(max_length=2500, validators=[alias_validator])
   description = models.CharField(max_length=2500, blank=True)
   rating = RatingField(range=ALIAS_RATING_RANGE, can_change_vote=True)
@@ -78,5 +81,12 @@ class Alias(Trackable, Activable):
   objects = AliasManager()
   tags = TaggableManager()
 
+  def get_absolute_url(self):
+    return reverse('aliases:show', args=[self.slug])
+
   def __unicode__(self):
     return self.content
+
+  def save(self, *args, **kwargs):
+    self.slug = slugify(self.content)
+    super(Alias , self).save(*args, **kwargs)

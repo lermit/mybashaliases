@@ -62,9 +62,9 @@
         {% endif %}
         </ul>
 
-        <form class="navbar-form navbar-right" role="search" action>
+        <form class="navbar-form navbar-right" role="search" method="get" action="{% url "aliases:search" %}">
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="Future search"/>
+            <input type="text" id="{{ search_form.q.id_for_label }}" class="form-control" placeholder="Search" {% if search_form.q.value %}value="{{ search_form.q.value }}"{% endif %} name="{{ search_form.q.name }}"/>
           </div>
         </form>
     </div>

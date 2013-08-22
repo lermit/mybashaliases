@@ -1,0 +1,38 @@
+{% extends "aliases/base_site.html" %}
+
+{% block content %}
+  {% if query %}
+    <h2>Search result</h2>
+    <div class="raw">
+      <div class="col-lg-8">
+      {% for result in page.object_list %}
+          <div class="col-sm-6 col-md-3">
+            <div class="thumbnail">
+              <div class="caption">
+              <h3>{{ result.object.content }}</h3>
+              <p>{{ result.object.description }}</p>
+              <p>
+                <a href="{{ result.object.get_absolute_url }}" class="btn btn-primary pull-right">Show >></a></p>
+              </div>
+            </div>
+          </div>
+      {% empty %}
+        <p>Oh no ... there is no result for you query !</p>
+      {% endfor %}
+      </div>
+      <div class="col-lg-4">
+        <div class="well well-sm"><h3>Wath you can search for</h3><p>Nunc fringilla magna nec augue interdum volutpat. Fusce vel justo pellentesque, faucibus leo eleifend, blandit velit. Quisque luctus tristique mollis. Nulla nec lorem odio. Proin sagittis nunc vel tellus tristique cursus. Sed quis sapien leo. Cras posuere massa libero, eu vestibulum leo aliquet at. Sed id nibh hendrerit, placerat urna et, posuere leo.</p></div>
+        <div class="well well-sm">
+          <h3>Exemple</h3>
+          <dl>
+            <dt>Alias about "ls" command<dt>
+              <dd>ls</dd>
+            <dt>Alias from "the_user" user<dt>
+              <dd>user: the_user</dd>
+          </dl>
+          <p></p></div>
+      </div>
+    </div>
+  {% endif %}
+
+{% endblock %}

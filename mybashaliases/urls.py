@@ -8,5 +8,5 @@ urlpatterns = patterns('',
     url(r'^aliases/', include('aliases.urls', namespace="aliases")),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('registration.urls', namespace='registration')),
-
+    url(r'^search/', include('haystack.urls')),
 )
